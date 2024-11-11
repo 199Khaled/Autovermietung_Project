@@ -64,6 +64,24 @@ namespace Busniss_Layer
             return (this.kontakID != -1);
         }
 
+        public static clsKontakt GetKontaktByEmailAndPasswort(string email, string passwort)
+        {
+            clsKontaktDatenzugriff.stKontakt kontakt = new clsKontaktDatenzugriff.stKontakt();
+
+            kontakt.email = email;
+            kontakt.passwort = passwort;
+
+            bool isfound = clsKontaktDatenzugriff.GetKontaktByEmailAndPasswort(ref kontakt);
+
+            if (isfound)
+            {
+                return new clsKontakt(kontakt.kotaktID, kontakt.personID, kontakt.email, kontakt.passwort,
+                    kontakt.telefon1, kontakt.telefon2);
+            }
+            else
+                return null;
+                
+        }
         public bool Save(int personID)
         {
             switch(_mode)

@@ -46,16 +46,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmKundeListe.cs">
+    <Compile Include="clsGlobal.cs" />
+    <Compile Include="frmAdd_UpdateKunde.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmKundeListe.Designer.cs">
-      <DependentUpon>frmKundeListe.cs</DependentUpon>
+    <Compile Include="frmAdd_UpdateKunde.Designer.cs">
+      <DependentUpon>frmAdd_UpdateKunde.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFahrzeugFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFahrzeugFilter.Designer.cs">
+      <DependentUpon>frmFahrzeugFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFahrzeugReservierung.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFahrzeugReservierung.Designer.cs">
+      <DependentUpon>frmFahrzeugReservierung.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLoginForm.Designer.cs">
+      <DependentUpon>frmLoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMainForm.Designer.cs">
+      <DependentUpon>frmMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVerfügbareFahrzeugListe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVerfügbareFahrzeugListe.Designer.cs">
+      <DependentUpon>frmVerfügbareFahrzeugListe.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="frmKundeListe.resx">
-      <DependentUpon>frmKundeListe.cs</DependentUpon>
+    <EmbeddedResource Include="frmAdd_UpdateKunde.resx">
+      <DependentUpon>frmAdd_UpdateKunde.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFahrzeugFilter.resx">
+      <DependentUpon>frmFahrzeugFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFahrzeugReservierung.resx">
+      <DependentUpon>frmFahrzeugReservierung.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLoginForm.resx">
+      <DependentUpon>frmLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMainForm.resx">
+      <DependentUpon>frmMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVerfügbareFahrzeugListe.resx">
+      <DependentUpon>frmVerfügbareFahrzeugListe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -65,6 +111,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +135,39 @@
       <Project>{0461c194-ce2d-40a6-a75e-fdf9a29e6383}</Project>
       <Name>HilfsMethoden</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\csm_210609_1920_975_HWS_Mietwagenprogramm_1_d5930bbb22.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\istockphoto-1422277261-612x612.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Login2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Login32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Login42.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\unnamed.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Auge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Augen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\pexels-negativespace-97079.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Karte Symbol.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

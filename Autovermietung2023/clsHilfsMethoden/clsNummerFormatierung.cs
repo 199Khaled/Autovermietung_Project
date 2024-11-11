@@ -8,9 +8,9 @@ namespace clsHilfsMethoden
 {
     public class clsNummerFormatierung
     {
-        public static string FormatiereKundenNummer(int kundenNummer)
-        {
-            return $"#Fahr-{kundenNummer:D4}";  //D4 gibt an, dass die Zahl auf vier Stellen aufgefüllt wird.
+        public static string FormatiereEingefügteNummer(string name, int kundenNummer)
+        {        
+              return $"#{name}-{kundenNummer:D5}";  //D4 gibt an, dass die Zahl auf vier Stellen aufgefüllt wird.
         }
     }
 }

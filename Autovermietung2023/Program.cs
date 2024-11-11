@@ -16,7 +16,8 @@ namespace Autovermietung2023
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmAddnewKunde());
+            //Application.Run(new frmAddnewKunde());
+            Application.Run(new frmMainForm());
         }
     }
 }

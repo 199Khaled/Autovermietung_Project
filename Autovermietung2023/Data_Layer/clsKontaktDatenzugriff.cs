@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Data_Layer.clsKontaktDatenzugriff;
 using static Data_Layer.clsPersonDatenzugriff;
 
 namespace Data_Layer
@@ -102,6 +103,57 @@ namespace Data_Layer
 
                                 kontakt.telefon1 = (string)reader["telefon1"];
                                 kontakt.telefon2 = (string)reader["telefon2"];
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    isfound = false;
+                    // Fange SQL-bezogene Fehler ab
+                    Console.WriteLine("SQL-Fehler: " + ex.Message);
+                }
+            }
+            return isfound;
+        }
+
+        public static bool GetKontaktByEmailAndPasswort(ref stKontakt kontakt)
+        {
+            bool isfound = false;
+            string abfrage = @"Select * from Kontakt
+                         where Kontakt.email = @email and Kontakt.passwort = @passwort";
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(abfrage, connection))
+                    {
+                        command.Parameters.AddWithValue("@email", kontakt.email);
+
+                        string verschlüsseltePasswort = clsVerschlüsselungHelfer.Encrypt(kontakt.passwort);
+                        command.Parameters.AddWithValue("@passwort", verschlüsseltePasswort);
+
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isfound = true;
+
+                                kontakt.personID = (int)reader["personID"];
+                                kontakt.kotaktID = (int)reader["kontaktID"];
+
+                                if (reader["telefon1"] == DBNull.Value)
+                                    kontakt.telefon1 = DBNull.Value.ToString();
+                                else
+                                    kontakt.telefon1 = (string)reader["telefon1"];
+
+                                if (reader["telefon2"] == DBNull.Value)
+                                    kontakt.telefon1 = DBNull.Value.ToString();
+                                else
+                                    kontakt.telefon1 = (string)reader["telefon2"];
                             }
                         }
                     }

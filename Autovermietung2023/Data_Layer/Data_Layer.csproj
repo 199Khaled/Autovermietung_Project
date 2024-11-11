@@ -42,9 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsFahrzeugDatenzugriff.cs" />
     <Compile Include="clsKontaktDatenzugriff.cs" />
     <Compile Include="clsKundeDatenzugriff.cs" />
+    <Compile Include="clsLizenzDatenzugriff.cs" />
     <Compile Include="clsPersonDatenzugriff.cs" />
+    <Compile Include="clsReservierungDatenzugriff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

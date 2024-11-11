@@ -16,26 +16,16 @@ namespace Busniss_Layer
 
         public int kundeNummer { get; set; }
         public DateTime  kundeSeit { get; set; }
-        public string lizenzNummer { get; set; }
-        public DateTime ausstellungDatum { get; set; }
-        public DateTime ablaufDatum { get; set; }
-        public string lizenzFoto { get; set; }
         public bool istAktive { get; set; }
 
         private clsKunde(int personID,  string vorname, string nachname,
                   DateTime geburtsTag, enGeschlecht geschlecht, string strasse,
                   string postleitzahl, string ort,
-                  int KundeNummer, DateTime kundeSeit, string lizenzNummer, 
-                  DateTime ausstellungsDatum, DateTime ablaufDatum,
-                  string lizenzFoto, bool istAktive)
+                  int KundeNummer, DateTime kundeSeit, bool istAktive)
             :base(personID,vorname, nachname,geburtsTag, geschlecht, strasse,  postleitzahl, ort)
         {
             this.kundeNummer = KundeNummer;
             this.kundeSeit = kundeSeit;
-            this.lizenzNummer = lizenzNummer;
-            this.ausstellungDatum = ausstellungsDatum;
-            this.ablaufDatum = ablaufDatum;
-            this.lizenzFoto = lizenzFoto;
             this.istAktive = istAktive;
 
             _mode = enMode.update;
@@ -45,10 +35,6 @@ namespace Busniss_Layer
         {
             this.kundeNummer = -1;
             this.kundeSeit = DateTime.Now;
-            this.lizenzNummer = string.Empty;
-            this.ausstellungDatum = DateTime.MinValue;
-            this.ablaufDatum = DateTime.MinValue;
-            this.lizenzFoto = string.Empty;
             this.istAktive = true;
 
             _mode = enMode.addnew;
@@ -67,9 +53,27 @@ namespace Busniss_Layer
             {
                 return new clsKunde(person.PersonID, person.Name, person.Vorname, person.GeburtsDatum,
                     (enGeschlecht)person.Geschlecht, person.Straße,
-                    person.Postleitzahl, person.Ort, kundenNummer, kunde.kundeSeit,
-                    kunde.lizenzNummer, kunde.ausstellungDatum, kunde.ablaufDatum,
-                    kunde.lizenzFoto, kunde.istAktive);
+                    person.Postleitzahl, person.Ort, kundenNummer, kunde.kundeSeit, kunde.istAktive);
+            }
+            else
+                return null;
+        }
+
+
+        public static clsKunde GetKundeDatenByEmailAndPasswort(string email, string passwort)
+        {
+            //wir erzeugen zwei Objekte von stPerson und stKuden um die daten zu repräsentieren.
+
+            clsKundeDatenzugriff.stPerson person = new clsKundeDatenzugriff.stPerson();
+            clsKundeDatenzugriff.stKunde kunde = new clsKundeDatenzugriff.stKunde();
+
+            bool isfound = clsKundeDatenzugriff.GetKundeByEmailAndPasswort(email, passwort, ref person, ref kunde);
+
+            if (isfound)
+            {
+                return new clsKunde(person.PersonID, person.Name, person.Vorname, person.GeburtsDatum,
+                    (enGeschlecht)person.Geschlecht, person.Straße,
+                    person.Postleitzahl, person.Ort, kunde.kundeNummer, kunde.kundeSeit, kunde.istAktive);
             }
             else
                 return null;
@@ -80,10 +84,6 @@ namespace Busniss_Layer
             {
                 personID = this.personID,
                 kundeSeit = this.kundeSeit,
-                lizenzNummer = this.lizenzNummer,
-                ausstellungDatum = this.ausstellungDatum,
-                ablaufDatum = this.ablaufDatum,
-                lizenzFoto = this.lizenzFoto,
                 istAktive = this.istAktive
             };
 

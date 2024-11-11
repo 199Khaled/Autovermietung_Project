@@ -16,15 +16,16 @@ namespace Autovermietung2023
 {
     public partial class frmAddnewKunde : Form
     {
-        bool flage = true; // um zu wecheln zwischen männlich und weiblich.
 
         clsKunde _neueKunde;
         clsKontakt _neueKontakt;
+        clsLizenz _Lizenz;
         enum enMode { addnew = 0, update = 1}
         enMode _mode;
         public frmAddnewKunde()
         {
             InitializeComponent();
+
         }
         private void _DatumEinrichten()
         {
@@ -35,23 +36,30 @@ namespace Autovermietung2023
             dtpKundeSeit.Format = DateTimePickerFormat.Custom;
             dtpKundeSeit.CustomFormat = "dd.MM.yyyy";
             dtpKundeSeit.Value = DateTime.Now;
+
+            dtpAusstaltungsDatum.Format = DateTimePickerFormat.Custom;
+            dtpAusstaltungsDatum.CustomFormat = "dd.MM.yyyy";
+            dtpAusstaltungsDatum.Value = DateTime.Now;
+
+            dtpAusstaltungsDatum.Format = DateTimePickerFormat.Custom;
+            dtpAblaufDatum.CustomFormat = "dd.MM.yyyy";
+            dtpAblaufDatum.Value = DateTime.Now;
         }
 
-        private void ResetKundeDatenAufStandardWerte()
+        private void _ResetKundeDatenAufStandardWerte()
         {
             _DatumEinrichten();
 
             txtKundeNummer.Text = Convert.ToString(-1);
             txtName.Clear();
             txtVorname.Clear();
-            checkBox1Männlich.Checked = true;
-            checkBox2Weiblich.Checked = false;
             txtStraße.Clear();
             txtPostleitzahl.Clear();
-            txtOrt.Clear();          
+            txtOrt.Clear();
+            dtpKundeSeit.Value = DateTime.Now;
         }
 
-        private void ResetKontaktDatenAufStandardWerte()
+        private void _ResetKontaktDatenAufStandardWerte()
         {
             txtKontaktID.Text = Convert.ToString(-1);
             txtEmail.Clear();
@@ -60,6 +68,15 @@ namespace Autovermietung2023
             txtTelefon2.Clear();
         }
 
+        private  void _ResetLizenzDatenAufStandardWerte()
+        {
+            txtLizenzNummer.Clear();
+            txtLizenzNummer.Text = _generiereLizenzNummer();
+            
+            dtpAusstaltungsDatum.Value = DateTime.Now;
+            dtpAblaufDatum.Value= DateTime.Now;
+            txtLizenzFoto.Clear();
+        }
         private void _FülleKundeDaten()
         {
              _neueKunde = new clsKunde();
@@ -67,12 +84,13 @@ namespace Autovermietung2023
             _neueKunde.name = txtName.Text;
             _neueKunde.vorname = txtVorname.Text;
             _neueKunde.geburtsDatum = dtpGeburtsdatum.Value;
-            _neueKunde.geschlecht = (checkBox1Männlich.Checked) ? clsPerson.enGeschlecht.männlich : clsPerson.enGeschlecht.weiblich;
+            _neueKunde.geschlecht = (cbGeschlecht.SelectedItem.ToString() == "Männlich") ? clsPerson.enGeschlecht.männlich : clsPerson.enGeschlecht.weiblich;
             _neueKunde.strasse = txtStraße.Text;
             _neueKunde.postleitzahl = txtPostleitzahl.Text;
             _neueKunde.ort = txtOrt.Text;
 
             _FülleKontaktDaten();
+            _FülleLizenzDaten();
         }
 
         private void _FülleKontaktDaten()
@@ -84,14 +102,43 @@ namespace Autovermietung2023
             _neueKontakt.telefon1 = txtTelefon1.Text;
             _neueKontakt.telefon2 = txtTelefon2.Text;
         }
+
+        private string _generiereLizenzNummer()
+        {
+            char zeichen ;
+            string nummer = "";
+            Random random = new Random();
+            StringBuilder result = new StringBuilder();
+
+            for(int i = 0; i  < 5; i++)
+            {
+                zeichen = (char)random.Next('A', 'Z' + 1); // Ohne +1 würde .Next nur bis Y gehen und Z auslassen.
+                result.Append(zeichen);
+            }
+
+            result.Append("-");
+            for(int i = 0; i < 5; i++)
+            {
+                nummer = random.Next(1, 10 + 1).ToString();
+                result.Append(nummer);
+            }
+            return result.ToString();
+        }
+        private void _FülleLizenzDaten()
+        {
+            _Lizenz = new clsLizenz();
+
+            _Lizenz.lizenzNummer = txtLizenzNummer.Text;
+            _Lizenz.ausstellungsDatum = dtpAusstaltungsDatum.Value;
+            _Lizenz.ablaufDatum = dtpAblaufDatum.Value;
+            _Lizenz.lizenzFoto = txtLizenzFoto.Text;
+        }
         private void frmAddnewKunde_Load(object sender, EventArgs e)
         {
             _DatumEinrichten();
-            ResetKundeDatenAufStandardWerte();
-            ResetKontaktDatenAufStandardWerte();
-
-            if (_mode == enMode.addnew)
-                _FülleKundeDaten();
+            _ResetKundeDatenAufStandardWerte();
+            _ResetKontaktDatenAufStandardWerte();
+            _ResetLizenzDatenAufStandardWerte();
         }
 
         private bool _ValiedereKundenFelder()
@@ -105,6 +152,7 @@ namespace Autovermietung2023
             isValid &= _ValidiereEinFeld(txtOrt, "Ort");
             isValid &= _ValidiereEinFeld(txtEmail, "Email");
             isValid &= _ValidiereEinFeld(txtPasswort, "Passwort");
+            isValid &= _ValidiereEinFeld(txtLizenzNummer, "LizenzNuummer");
 
             return isValid; // Gibt zurück, ob alle Felder gültig sind
         }
@@ -220,6 +268,7 @@ namespace Autovermietung2023
            
             return true;
         }
+
         private void _SpeichereKundeDaten()
         {
             if (!_IstValid())
@@ -230,20 +279,27 @@ namespace Autovermietung2023
 
             string status = string.Empty;
             if (_mode == enMode.addnew)
-                status = "Kunde erfolgreich hinzugefügt";
+                status = "Kunded erfolgreich hinzugefügt";
             else
                 status = "Kunde erfolgreich aktualisiert";
 
             if(_neueKunde.Save())
             {
-                txtKundeNummer.Text = clsNummerFormatierung.FormatiereKundenNummer(_neueKunde.kundeNummer);
+                txtKundeNummer.Text = clsNummerFormatierung.FormatiereEingefügteNummer("Kunde",_neueKunde.kundeNummer);
                 _mode = enMode.update;
+
+                if (!_Lizenz.Save(_neueKunde.kundeNummer))
+                {
+                     MessageBox.Show("Feheler beim Speichern Liznezdaten ist aufgetreten","Fehler",
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 int personID = _neueKunde.personID;
 
                 if(_neueKontakt.Save(personID))
                 {
-                    txtKontaktID.Text = _neueKontakt.kontakID.ToString();
+                    txtKontaktID.Text = clsNummerFormatierung.FormatiereEingefügteNummer("Kontakt", _neueKontakt.kontakID);
                     _mode = enMode.update;
                     MessageBox.Show(status, "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -272,40 +328,24 @@ namespace Autovermietung2023
             _SpeichereKundeDaten();
         }
 
-        private void checkBox1Männlich_Click(object sender, EventArgs e)
-        {
-            if(flage)
-            {
-                checkBox1Männlich.Checked = false;
-                checkBox2Weiblich.Checked = true;
-            }
-            else
-            {
-                checkBox1Männlich.Checked = true;
-                checkBox2Weiblich.Checked = false;
-            }
-
-            flage = !flage;
-        }
-
-        private void checkBox2Weiblich_Click(object sender, EventArgs e)
-        {
-            if(flage)
-            {
-                checkBox1Männlich.Checked = false;
-                checkBox2Weiblich.Checked = true;
-            }
-            else
-            {
-                checkBox1Männlich.Checked = true;
-                checkBox2Weiblich.Checked = false;
-            }
-            flage = !flage;
-        }
-
-        private void label1_Click(object sender, EventArgs e)
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
 
         }
+
+        private void btnLizenzDateiHochladen_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Image File|*.jpg; *.jpeg; **.pen; *.gif; *.bmp";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.RestoreDirectory = true;
+
+            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtLizenzFoto.Text = openFileDialog1.FileName;
+            }
+
+        }
+
+  
     }
 }

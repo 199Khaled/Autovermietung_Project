@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsDateiZumSpeichern.cs" />
     <Compile Include="clsDatumFormat.cs" />
     <Compile Include="clsNummerFormatierung.cs" />
     <Compile Include="clsOrdnerFürBilderErstellen.cs" />
